@@ -8,6 +8,7 @@ import ChildBenefitsClaim from '../ChildBenefitsClaim/index';
 import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
 import Accessibility from '../ChildBenefitsClaim/AccessibilityPage';
 import UnAuthChildBenefitsClaim from '../UnAuthChildBenefitsClaim';
+import PaymentsClaim from '../PaymentsClaim';
 
 const AppSelector = () => {
   i18n
@@ -26,10 +27,13 @@ const AppSelector = () => {
         useSuspense: false
       }
     });
+  const queryParams = new URLSearchParams(window.location.search);
+  const assignmentId = queryParams.get('assignmentId');
 
   return (
     <Switch>
       <Route exact path='/' component={ChildBenefitsClaim} />
+      <Route path='/payments' render={() => <PaymentsClaim assignmentId={assignmentId} />} />
       <Route exact path='/ua' component={UnAuthChildBenefitsClaim} />
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
