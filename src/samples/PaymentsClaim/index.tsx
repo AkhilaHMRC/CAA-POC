@@ -20,19 +20,21 @@ declare const myLoadMashup: any;
 
 interface IPaymentsClaimProps {
   assignmentId: string;
+  caseId: string;
 }
 
 export default function PaymentsClaim(props: IPaymentsClaimProps) {
   const [pConn, setPConn] = useState<any>(null);
   const [bShowPega, setShowPega] = useState(false);
   const [bShowAppName, setShowAppName] = useState(false);
-  const [caseId, setCaseId] = useState('');
   const { t } = useTranslation();
 
   useEffect(() => {
     const assignment = props.assignmentId;
-    if (assignment !== null) {
+    const caseInKey = props.caseId;
+    if (assignment !== null && caseInKey !== null) {
       sessionStorage.setItem('assignmentID', assignment);
+      sessionStorage.setItem('caseID', caseInKey);
     }
   }, []);
 
@@ -233,7 +235,7 @@ export default function PaymentsClaim(props: IPaymentsClaimProps) {
           <div id='pega-part-of-page'>
             <div id='pega-root'></div>
           </div>
-          <p>Affortability Case {caseId}</p>
+          <p>Affortability Case</p>
         </>
       </div>
       <AppFooter />

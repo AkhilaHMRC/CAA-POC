@@ -28,12 +28,15 @@ const AppSelector = () => {
       }
     });
   const queryParams = new URLSearchParams(window.location.search);
-  const assignmentId = queryParams.get('assignmentId');
+  const caseProps = {
+    assignmentId: queryParams.get('assignmentId'),
+    caseId: queryParams.get('caseId')
+  };
 
   return (
     <Switch>
       <Route exact path='/' component={ChildBenefitsClaim} />
-      <Route path='/payments' render={() => <PaymentsClaim assignmentId={assignmentId} />} />
+      <Route path='/payments' render={() => <PaymentsClaim {...caseProps} />} />
       <Route exact path='/ua' component={UnAuthChildBenefitsClaim} />
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
