@@ -49,6 +49,36 @@ export default function PaymentsClaim(props: IPaymentsClaimProps) {
       PCore.getMashupApi().openAssignment(assignmentID);
     }
     // 'ASSIGN-WORKLIST HMRC-DEBT-WORK A-3002!STARTAFFORDABILITYASSESSMENT_FLOW_1'
+    // const caseInKey = props.caseId;
+    const caseInKey = sessionStorage.getItem('caseID');
+    // const context = pConn.getContextName();
+    // console.log('Context:' + context);
+    PCore.getDataPageUtils()
+      .getPageDataAsync('D_WebSessionAPI', 'app', {
+        CaseInsKey: caseInKey
+      })
+      .then(resp => {
+        // if (!resp || !resp.data) {
+        //   throw new Error('Invalid response from Pega data page');
+        // }
+        // const redirectUrl = resp.data.trim(); // Trim any leading/trailing whitespace
+        console.log('resp*****' + resp);
+        let respData = resp.defaultResponse_GET;
+        respData = JSON.parse(respData);
+        console.log('Redirect_URL****' + respData);
+        const redirectUrl = respData._links.session;
+        console.log('redirectUrl****' + redirectUrl);
+        if (redirectUrl === '') {
+          throw new Error('Empty URL received from Pega data page');
+        }
+        // if (redirectUrl) {
+        //   window.location.href = redirectUrl;
+        // }
+        // Display the URL to the user
+        // console.log('Redirect URL:', redirectUrl);
+        // resp = resp.data;
+        // console.log('*****Response:' + resp);
+      });
   }
 
   function startNow() {

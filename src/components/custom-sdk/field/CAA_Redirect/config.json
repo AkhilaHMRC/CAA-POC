@@ -1,12 +1,12 @@
 {
-  "name": "HMRC_ODX_ChangeLink",
-  "label": "Change link",
-  "description": "Change link",
+  "name": "CAA_Redirect",
+  "label": "Redirect link",
+  "description": "Redirect link to MDTP",
   "organization": "HMRC",
   "version": "0.0.1",
-  "library": "ODX",
+  "library": "CAA-POC",
   "allowedApplications": [],
-  "componentKey": "HMRC_ODX_ChangeLink",
+  "componentKey": "CAA_Redirect",
   "type": "Field",
   "subtype": "Text",
   "properties": [
@@ -34,11 +34,6 @@
       "name": "required",
       "label": "Required",
       "format": "REQUIRED"
-    },
-    {
-      "name": "stepId",
-      "label": "Step ID (Navigation)",
-      "format": "TEXT"
     }
   ],
   "defaultConfig": {}
