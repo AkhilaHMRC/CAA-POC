@@ -1,7 +1,6 @@
 // Statically load all "local" components that aren't yet in the npm package
 
 import FieldCheckbox from './src/components/override-sdk/field/Checkbox/';
-import Redirect from './src/components/custom-sdk/field/CAA_Redirect/CAA_Redirect';
 import FieldTextInput from './src/components/override-sdk/field/TextInput/';
 import FieldDate from './src/components/override-sdk/field/Date/';
 import CheckAnswers from './src/components/custom-sdk/template/CheckAnswers/';
@@ -24,6 +23,7 @@ import HmrcOdxGdsInfoPanel from './src/components/custom-sdk/template/HMRC_ODX_G
 import HmrcOdxGdsSummaryCard from './src/components/custom-sdk/template/HMRC_ODX_GDSSummaryCard/';
 import HmrcOdxGdsButton from './src/components/custom-sdk/field/HMRC_ODX_GDSButton/';
 import HmrcOdxComplexQuestionExplanation from './src/components/custom-sdk/field/HMRC_ODX_ComplexQuestionExplanation/';
+import HmrcOdxMdtpRedirect from './src/components/custom-sdk/field/HMRC_ODX_MDTPRedirect/';
 /*import end - DO NOT REMOVE*/
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -31,7 +31,7 @@ import HmrcOdxComplexQuestionExplanation from './src/components/custom-sdk/field
 
 const localSdkComponentMap = {
   Checkbox: FieldCheckbox,
-  CAA_Redirect: Redirect,
+  HMRC_ODX_MDTPRedirect: HmrcOdxMdtpRedirect,
   TextInput: FieldTextInput,
   Date: FieldDate,
   HMRC_ODX_CheckAnswers: CheckAnswers,

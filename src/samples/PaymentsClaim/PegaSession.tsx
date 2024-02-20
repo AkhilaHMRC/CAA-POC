@@ -41,7 +41,7 @@ const PegaSession = () => {
           })
         });
       } catch (error) {
-        console.error('Error:', error);
+        throw new Error('Error in MDTP session endpoint call');
       }
     };
 

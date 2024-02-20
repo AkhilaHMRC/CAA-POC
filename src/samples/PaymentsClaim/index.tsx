@@ -9,7 +9,6 @@ import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helper
 import localSdkComponentMap from '../../../sdk-local-component-map';
 import {
   loginIfNecessary,
-  sdkIsLoggedIn,
   sdkSetAuthHeader
 } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
@@ -23,15 +22,13 @@ interface IPaymentsClaimProps {
   caseId: string;
 }
 
-export default function PaymentsClaim(props: IPaymentsClaimProps) {
-  const [pConn, setPConn] = useState<any>(null);
+export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
   const [bShowPega, setShowPega] = useState(false);
-  const [bShowAppName, setShowAppName] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
-    const assignment = props.assignmentId;
-    const caseInKey = props.caseId;
+    const assignment = mainProps.assignmentId;
+    const caseInKey = mainProps.caseId;
     if (assignment !== null && caseInKey !== null) {
       sessionStorage.setItem('assignmentID', assignment);
       sessionStorage.setItem('caseID', caseInKey);
@@ -48,46 +45,25 @@ export default function PaymentsClaim(props: IPaymentsClaimProps) {
     if (assignmentID) {
       PCore.getMashupApi().openAssignment(assignmentID);
     }
-    // 'ASSIGN-WORKLIST HMRC-DEBT-WORK A-3002!STARTAFFORDABILITYASSESSMENT_FLOW_1'
-    // const caseInKey = props.caseId;
-    const caseInKey = sessionStorage.getItem('caseID');
-    // const context = pConn.getContextName();
-    // console.log('Context:' + context);
-    PCore.getDataPageUtils()
-      .getPageDataAsync('D_WebSessionAPI', 'app', {
-        CaseInsKey: caseInKey
-      })
-      .then(resp => {
-        // if (!resp || !resp.data) {
-        //   throw new Error('Invalid response from Pega data page');
-        // }
-        // const redirectUrl = resp.data.trim(); // Trim any leading/trailing whitespace
-        console.log('resp*****' + resp);
-        let respData = resp.defaultResponse_GET;
-        respData = JSON.parse(respData);
-        console.log('Redirect_URL****' + respData);
-        const redirectUrl = respData._links.session;
-        console.log('redirectUrl****' + redirectUrl);
-        if (redirectUrl === '') {
-          throw new Error('Empty URL received from Pega data page');
-        }
-        // if (redirectUrl) {
-        //   window.location.href = redirectUrl;
-        // }
-        // Display the URL to the user
-        // console.log('Redirect URL:', redirectUrl);
-        // resp = resp.data;
-        // console.log('*****Response:' + resp);
-      });
   }
 
-  function startNow() {
-    // Check if PConn is created, and create case if it is
-    //if (pConn)
-    console.log('inside Start now!!');
-    // createCase();
-    openAssignment();
-    //}
+  
+  // from react_root.js with some modifications
+  function RootComponent(pegaConnectProps) {
+    const PegaConnectObj = createPConnectComponent();
+    const thePConnObj = <PegaConnectObj {...pegaConnectProps} />;
+
+    // NOTE: For Embedded mode, we add in displayOnlyFA and isMashup to our React context
+    // so the values are available to any component that may need it.
+    const theComp = (
+      <StoreContext.Provider
+        value={{ store: PCore.getStore(), displayOnlyFA: true, isMashup: true }}
+      >
+        {thePConnObj}
+      </StoreContext.Provider>
+    );
+
+    return theComp;
   }
 
   /**
@@ -105,11 +81,6 @@ export default function PaymentsClaim(props: IPaymentsClaimProps) {
       portalTarget,
       styleSheetTarget
     } = inRenderObj;
-
-    const thePConn = props.getPConnect();
-
-    setPConn(thePConn);
-
     let target: any = null;
 
     if (domContainerID !== null) {
@@ -133,6 +104,24 @@ export default function PaymentsClaim(props: IPaymentsClaimProps) {
     render(<React.Fragment>{theComponent}</React.Fragment>, target);
   }
 
+  function establishPCoreSubscriptions() {
+    PCore.getPubSubUtils().subscribe(
+      'assignmentFinished',
+      () => {
+        setShowPega(false);
+      },
+      'assignmentFinished'
+    );
+
+    PCore.getPubSubUtils().subscribe(
+      PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
+      () => {
+        setShowPega(false);
+      },
+      'cancelAssignment'
+    );
+  }
+
   /**
    * kick off the application's portal that we're trying to serve up
    */
@@ -145,14 +134,10 @@ export default function PaymentsClaim(props: IPaymentsClaimProps) {
       compareSdkPCoreVersions();
 
       establishPCoreSubscriptions();
-      setShowAppName(true);
 
       // Initialize the SdkComponentMap (local and pega-provided)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
       getSdkComponentMap(localSdkComponentMap).then((theComponentMap: any) => {
-        // eslint-disable-next-line no-console
-        console.log(`SdkComponentMap initialized`);
-
         // Don't call initialRender until SdkComponentMap is fully initialized
         initialRender(renderObj);
       });
@@ -195,7 +180,7 @@ export default function PaymentsClaim(props: IPaymentsClaimProps) {
       document.addEventListener('SdkConstellationReady', () => {
         // start the portal
         startMashup();
-        startNow();
+        openAssignment();
       });
 
       // Login if needed, without doing an initial main window redirect
@@ -215,42 +200,6 @@ export default function PaymentsClaim(props: IPaymentsClaimProps) {
       PCore?.getPubSubUtils().unsubscribe('assignmentFinished', 'assignmentFinished');
     };
   }, []);
-
-  function establishPCoreSubscriptions() {
-    PCore.getPubSubUtils().subscribe(
-      'assignmentFinished',
-      () => {
-        setShowPega(false);
-      },
-      'assignmentFinished'
-    );
-
-    PCore.getPubSubUtils().subscribe(
-      PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
-      () => {
-        setShowPega(false);
-      },
-      'cancelAssignment'
-    );
-  }
-
-  // from react_root.js with some modifications
-  function RootComponent(props) {
-    const PegaConnectObj = createPConnectComponent();
-    const thePConnObj = <PegaConnectObj {...props} />;
-
-    // NOTE: For Embedded mode, we add in displayOnlyFA and isMashup to our React context
-    // so the values are available to any component that may need it.
-    const theComp = (
-      <StoreContext.Provider
-        value={{ store: PCore.getStore(), displayOnlyFA: true, isMashup: true }}
-      >
-        {thePConnObj}
-      </StoreContext.Provider>
-    );
-
-    return theComp;
-  }
 
   return (
     <>

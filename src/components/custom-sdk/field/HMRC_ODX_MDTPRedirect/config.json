@@ -1,12 +1,12 @@
 {
-  "name": "CAA_Redirect",
-  "label": "Redirect link",
+  "name": "HMRC_ODX_MDTPRedirect",
+  "label": "MDTP Redirect link",
   "description": "Redirect link to MDTP",
   "organization": "HMRC",
   "version": "0.0.1",
-  "library": "CAA-POC",
+  "library": "ODX",
   "allowedApplications": [],
-  "componentKey": "CAA_Redirect",
+  "componentKey": "HMRC_ODX_MDTPRedirect",
   "type": "Field",
   "subtype": "Text",
   "properties": [

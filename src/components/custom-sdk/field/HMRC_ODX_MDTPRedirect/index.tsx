@@ -1,7 +1,9 @@
 import { Link } from '@pega/cosmos-react-core';
 import React, { useState, useEffect } from 'react';
 
-const Redirect = () => {
+import StyledHmrcOdxMdtpRedirectWrapper from './styles';
+
+export default function MDTPRedirect() {
   const [redirectUrl, setRedirectUrl] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -19,16 +21,15 @@ const Redirect = () => {
             }
             let respData = response.defaultResponse_GET;
             respData = JSON.parse(respData);
-            const redirectUrl = respData._links.session;
-            if (redirectUrl === '') {
+            const webSessionUrl = respData._links.session;
+            if (webSessionUrl === '') {
               throw new Error('Empty URL received from Pega data page');
             }
-            const url = redirectUrl;
-            setRedirectUrl(url);
+            setRedirectUrl(webSessionUrl);
             setLoading(false);
           });
       } catch (error) {
-        console.error('Error fetching data from Pega:', error);
+        throw new Error("Error fetching data from Pega:");
         setLoading(false);
       }
     };
@@ -39,18 +40,14 @@ const Redirect = () => {
   }, []);
 
   return (
-    <div>
+    <StyledHmrcOdxMdtpRedirectWrapper>
       {loading ? (
-        <div>Loading...</div>
+        <>Loading...</>
       ) : (
-        <div>
-          <Link href={redirectUrl} variant='link' target='_blank'>
-            MDTP Redirect
-          </Link>
-        </div>
+        <Link href={redirectUrl} variant='link' target='_blank'>
+            Go back to MDTP
+        </Link>
       )}
-    </div>
+    </StyledHmrcOdxMdtpRedirectWrapper>
   );
 };
-
-export default Redirect;
