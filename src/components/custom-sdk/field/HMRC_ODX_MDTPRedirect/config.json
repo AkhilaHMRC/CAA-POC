@@ -1,40 +1,111 @@
 {
   "name": "HMRC_ODX_MDTPRedirect",
-  "label": "MDTP Redirect link",
-  "description": "Redirect link to MDTP",
+  "label": "MDTP Redirect",
+  "description": "Redirects users to MDTP ",
   "organization": "HMRC",
   "version": "0.0.1",
   "library": "ODX",
   "allowedApplications": [],
   "componentKey": "HMRC_ODX_MDTPRedirect",
   "type": "Field",
-  "subtype": "Text",
+  "subtype": "Text-URL",
+  "icon": "images/pz-text-input-active.svg",
   "properties": [
     {
       "name": "label",
-      "label": "Label value",
-      "format": "TEXT"
+      "label": "Field label",
+      "format": "TEXT",
+      "required": true
     },
     {
-      "name": "placeholder",
-      "label": "Placeholder",
-      "format": "TEXT"
+      "name": "readOnly",
+      "label": "Edit mode",
+      "format": "READONLY"
     },
     {
-      "name": "visibility",
-      "label": "Visible",
-      "format": "VISIBILITY"
+      "label": "Column settings",
+      "format": "GROUP",
+      "visibility": "@VIEWTYPE == 'MultiRecordDisplayAsTable'",
+      "properties": [
+        {
+          "name": "columnWidth",
+          "label": "Column width",
+          "format": "SELECT",
+          "source": [
+            {
+              "key": "auto",
+              "value": "Auto"
+            },
+            {
+              "key": "custom",
+              "value": "Custom"
+            }
+          ]
+        },
+        {
+          "name": "width",
+          "label": "Width (px)",
+          "format": "NUMBER",
+          "visibility": "$this.columnWidth == 'custom'"
+        }
+      ]
     },
     {
-      "name": "disabled",
-      "label": "Disabled",
-      "format": "DISABLED"
+      "label": "Input settings",
+      "format": "GROUP",
+      "visibility": "(!readOnly = true)",
+      "properties": [
+        {
+          "name": "placeholder",
+          "label": "Placeholder",
+          "format": "TEXT"
+        },
+        {
+          "name": "helperText",
+          "label": "Helper text",
+          "format": "TEXT"
+        }
+      ]
     },
     {
-      "name": "required",
-      "label": "Required",
-      "format": "REQUIRED"
+      "label": "Conditions",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "required",
+          "label": "Required",
+          "format": "REQUIRED",
+          "visibility": "(!readOnly = true)"
+        },
+        {
+          "name": "disabled",
+          "label": "Disabled",
+          "format": "DISABLED",
+          "visibility": "(!readOnly = true)"
+        },
+        {
+          "name": "visibility",
+          "label": "Visibility",
+          "format": "VISIBILITY"
+        }
+      ]
+    },
+    {
+      "label": "Advanced",
+      "format": "GROUP",
+      "collapsible": true,
+      "properties": [
+        {
+          "name": "testId",
+          "label": "Test ID",
+          "format": "TEXT",
+          "ignorePattern": "[^-_\\p{N}\\p{L}]",
+          "includeAnnotations": false
+        }
+      ]
     }
   ],
-  "defaultConfig": {}
+  "defaultConfig": {
+    "label": "@L $this.label"
+  }
 }

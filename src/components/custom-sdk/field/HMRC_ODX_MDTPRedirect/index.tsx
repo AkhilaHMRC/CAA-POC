@@ -15,8 +15,9 @@ export default function MDTPRedirect() {
           .getPageDataAsync('D_WebSessionAPI', 'app', {
             CaseInsKey: caseInKey
           })
+          // @ts-ignore
           .then(response => {
-            if (!response || !response.data) {
+            if (!response || !response.defaultResponse_GET) {
               throw new Error('Failed to fetch data from Pega.');
             }
             let respData = response.defaultResponse_GET;
@@ -29,7 +30,7 @@ export default function MDTPRedirect() {
             setLoading(false);
           });
       } catch (error) {
-        throw new Error("Error fetching data from Pega:");
+        throw new Error('Error fetching data from Pega:');
         setLoading(false);
       }
     };
@@ -44,10 +45,10 @@ export default function MDTPRedirect() {
       {loading ? (
         <>Loading...</>
       ) : (
-        <Link href={redirectUrl} variant='link' target='_blank'>
-            Go back to MDTP
+        <Link href={redirectUrl} variant='link'>
+          Go back to MDTP
         </Link>
       )}
     </StyledHmrcOdxMdtpRedirectWrapper>
   );
-};
+}

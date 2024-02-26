@@ -54,7 +54,8 @@ const localSdkComponentMap = {
   HMRC_ODX_GDSInfoPanel: HmrcOdxGdsInfoPanel,
   HMRC_ODX_GDSSummaryCard: HmrcOdxGdsSummaryCard,
   HMRC_ODX_GDSButton: HmrcOdxGdsButton,
-  HMRC_ODX_ComplexQuestionExplanation: HmrcOdxComplexQuestionExplanation
+  HMRC_ODX_ComplexQuestionExplanation: HmrcOdxComplexQuestionExplanation,
+  HMRC_ODX_MDTPRedirect: HmrcOdxMdtpRedirect
   /*map end - DO NOT REMOVE*/
 };
 
