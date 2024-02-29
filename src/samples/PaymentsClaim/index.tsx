@@ -14,6 +14,7 @@ import {
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import { render } from 'react-dom';
+import toggleNotificationProcess from '../../components/helpers/toggleNotificationProcess';
 
 declare const myLoadMashup: any;
 
@@ -24,6 +25,7 @@ interface IPaymentsClaimProps {
 
 export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
   const [bShowPega, setShowPega] = useState(false);
+  const [assignmentPConn, setAssignmentPConn] = useState(null);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -47,7 +49,6 @@ export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
     }
   }
 
-  
   // from react_root.js with some modifications
   function RootComponent(pegaConnectProps) {
     const PegaConnectObj = createPConnectComponent();
@@ -55,9 +56,24 @@ export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
 
     // NOTE: For Embedded mode, we add in displayOnlyFA and isMashup to our React context
     // so the values are available to any component that may need it.
+    //   const theComp = (
+    //     <StoreContext.Provider
+    //       value={{ store: PCore.getStore(), displayOnlyFA: true, isMashup: true }}
+    //     >
+    //       {thePConnObj}
+    //     </StoreContext.Provider>
+    //   );
+
+    //   return theComp;
+    // }
     const theComp = (
       <StoreContext.Provider
-        value={{ store: PCore.getStore(), displayOnlyFA: true, isMashup: true }}
+        value={{
+          store: PCore.getStore(),
+          displayOnlyFA: true,
+          isMashup: true,
+          setAssignmentPConnect: setAssignmentPConn
+        }}
       >
         {thePConnObj}
       </StoreContext.Provider>
@@ -203,11 +219,20 @@ export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
 
   return (
     <>
-      <AppHeader
+      {/* <AppHeader
         handleSignout={() => {}}
         appname={t('AFFORDABILITY_ASSESSMENT_CASE')}
         hasLanguageToggle
         isPegaApp={bShowPega}
+      /> */}
+      <AppHeader
+        handleSignout={() => {}}
+        appname={t('AFFORDABILITY_ASSESSMENT_CASE')}
+        hasLanguageToggle
+        languageToggleCallback={toggleNotificationProcess(
+          { en: 'SwitchLanguageToEnglish', cy: 'SwitchLanguageToWelsh' },
+          assignmentPConn
+        )}
       />
       <div className='govuk-width-container'>
         <>
