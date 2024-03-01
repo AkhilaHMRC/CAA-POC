@@ -20,37 +20,26 @@ import LogoutPopup from '../../components/AppComponents/LogoutPopup';
 
 declare const myLoadMashup: any;
 
-interface IPaymentsClaimProps {
-  assignmentId: string;
-  caseId: string;
-}
+const options = {
+  startingFields: {
+      Action: "Create"
+  }
+};
 
-export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
+export default function BudgetPaymentPlans() {
   const [bShowPega, setShowPega] = useState(false);
   const [assignmentPConn, setAssignmentPConn] = useState(null);
   const [showSignoutModal, setShowSignoutModal] = useState(false);
   const [authType, setAuthType] = useState('gg');
   const { t } = useTranslation();
 
-  useEffect(() => {
-    const assignment = mainProps.assignmentId;
-    const caseInKey = mainProps.caseId;
-    if (assignment !== null && caseInKey !== null) {
-      sessionStorage.setItem('assignmentID', assignment);
-      sessionStorage.setItem('caseID', caseInKey);
-    }
-  }, []);
-
   function displayPega() {
     setShowPega(true);
   }
 
-  function openAssignment() {
+  function showPaymentPlans() {
     displayPega();
-    const assignmentID = sessionStorage.getItem('assignmentID');
-    if (assignmentID) {
-      PCore.getMashupApi().openAssignment(assignmentID);
-    }
+    PCore.getMashupApi().createCase('HMRC-Debt-Work-BPP', PCore.getConstants().APP.APP, options);
   }
 
   // from react_root.js with some modifications
@@ -163,12 +152,6 @@ export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
     myLoadMashup('pega-root', false); // this is defined in bootstrap shell that's been loaded already
   }
 
-  const directWithQueryParam = () => {
-    const assignmentId = sessionStorage.getItem('assignmentID');
-    const caseId = sessionStorage.getItem('caseID');
-    window.location.href = window.location.pathname + '?caseId='+caseId+'&assignmentId='+assignmentId;
-  };
-
   // One time (initialization) subscriptions and related unsubscribe
   useEffect(() => {
     getSdkConfig().then((sdkConfig: any) => {
@@ -200,7 +183,7 @@ export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
       document.addEventListener('SdkConstellationReady', () => {
         // start the portal
         startMashup();
-        openAssignment();
+        showPaymentPlans();
       });
 
       document.addEventListener('SdkLoggedOut', () => {
@@ -208,7 +191,7 @@ export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
       });
 
       // Login if needed, without doing an initial main window redirect
-      loginIfNecessary({ appName: 'embedded', mainRedirect: true, redirectDoneCB: directWithQueryParam });
+      loginIfNecessary({ appName: 'embedded', mainRedirect: true });
     });
 
     // Subscriptions can't be done until onPCoreReady.
@@ -277,7 +260,7 @@ export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
     <>
       <AppHeader
         handleSignout={handleSignout}
-        appname={t('AFFORDABILITY_ASSESSMENT_CASE')}
+        appname={t('BUDGET_PAYMENT_PLANS')}
         hasLanguageToggle
         languageToggleCallback={toggleNotificationProcess(
           { en: 'SwitchLanguageToEnglish', cy: 'SwitchLanguageToWelsh' },
@@ -289,7 +272,7 @@ export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
           <div id='pega-part-of-page'>
             <div id='pega-root'></div>
           </div>
-          <p>Affortability Case</p>
+          <p>Budget Payment Plans</p>
         </>
       </div>
       <LogoutPopup

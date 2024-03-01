@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout(function () {
               window.location.href =
                 'http://localhost:3502/affordability?caseId=' + caseId + '&assignmentId=' + assignmentId;
-            }, 9000); // 4000 milliseconds = 6 seconds
+            }, 1000); // 4000 milliseconds = 6 seconds
           } else {
             // Display an error message if 'ID' field is missing in the response
             document.getElementById('result').innerHTML = "Error: 'ID' field missing in response";

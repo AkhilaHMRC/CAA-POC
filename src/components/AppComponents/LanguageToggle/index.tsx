@@ -18,9 +18,10 @@ const LanguageToggle = props => {
     PCore.getEnvironmentInfo().setLocale(`${lang}_GB`);
     PCore.getLocaleUtils().resetLocaleStore();
     PCore.getLocaleUtils().loadLocaleResources([
-      PCore.getLocaleUtils().GENERIC_BUNDLE_KEY,
-      '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE',
-      'HMRC-CHB-WORK-CLAIM!CASE!CLAIM'
+      // PCore.getLocaleUtils().GENERIC_BUNDLE_KEY,
+      'HMRC-DEBT-WORK-AFFORDASSESS!VIEW!YOURMONTHLYSPENDING',
+      'HMRC-DEBT-WORK-AFFORDASSESS!VIEW!ADDINFORMATIONABOUTYOURPERSONALSPENDINGONLY',
+      'HMRC-DEBT-WORK-AFFORDASSESS!CASE!AFFORDASSESS'
     ]);
     if (languageToggleCallback) {
       languageToggleCallback(lang);
