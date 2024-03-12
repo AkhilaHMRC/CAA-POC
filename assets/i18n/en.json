@@ -1,5 +1,7 @@
 {
   "CLAIM_CHILD_BENEFIT": "Claim Child Benefit",
+  "AFFORDABILITY_ASSESSMENT_CASE": "Affordability Assessment",
+  "BUDGET_PAYMENT_PLANS": "Budget Payment Plans",
   "CLAIM_INCOMPLETE": "Application incomplete",
   "YOU_HAVE_COMPLETED": "You have completed ",
   "OF_4_SECTIONS": " of 4 sections",
@@ -228,5 +230,11 @@
   "SHUTTER_USE_SERVICE_LATER_MESSAGE": "You will be able to use the service later.",
   "PORTAL_WARNING_TEXT": "We saved your progress on",
   "PORTAL_WARNING_TEXT2": "and will store your information for 28 days.",
-  "PORTAL_NOTIFICATION_BANNER_CONTENT": "We saved your progress and will store your information for 28 days."
+  "PORTAL_NOTIFICATION_BANNER_CONTENT": "We saved your progress and will store your information for 28 days.",
+  "TRAVEL": "Travel",
+  "UTILITIES": "Utilities",
+  "GROCERIES": "Groceries",
+  "HEALTH": "health",
+  "INSURANCE": "Insurance",
+  "DEBT_REPAYMENTS": "Debt Repayments"
 }

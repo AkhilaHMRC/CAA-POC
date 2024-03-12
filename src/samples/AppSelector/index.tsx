@@ -8,6 +8,8 @@ import ChildBenefitsClaim from '../ChildBenefitsClaim/index';
 import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
 import Accessibility from '../ChildBenefitsClaim/AccessibilityPage';
 import UnAuthChildBenefitsClaim from '../UnAuthChildBenefitsClaim';
+import PaymentsClaim from '../PaymentsClaim';
+import BudgetPaymentPlans from '../BudgetPaymentPlans';
 
 const AppSelector = () => {
   i18n
@@ -26,10 +28,17 @@ const AppSelector = () => {
         useSuspense: false
       }
     });
+  const queryParams = new URLSearchParams(window.location.search);
+  const caseProps = {
+    assignmentId: queryParams.get('assignmentId'),
+    caseId: queryParams.get('caseId')
+  };
 
   return (
     <Switch>
       <Route exact path='/' component={ChildBenefitsClaim} />
+      <Route path='/affordability' render={() => <PaymentsClaim {...caseProps} />} />
+      <Route path='/bpp' component={BudgetPaymentPlans} />
       <Route exact path='/ua' component={UnAuthChildBenefitsClaim} />
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
