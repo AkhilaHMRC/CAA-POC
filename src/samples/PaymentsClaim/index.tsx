@@ -67,10 +67,10 @@ export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
           displayOnlyFA: true,
           isMashup: true,
           setAssignmentPConnect: setAssignmentPConn
-      }}
-    >
-      {thePConnObj}
-    </StoreContext.Provider>
+        }}
+      >
+        {thePConnObj}
+      </StoreContext.Provider>
     );
 
     return theComp;
@@ -166,7 +166,7 @@ export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
   const directWithQueryParam = () => {
     const assignmentId = sessionStorage.getItem('assignmentID');
     const caseId = sessionStorage.getItem('caseID');
-    window.location.href = window.location.pathname + '?caseId='+caseId+'&assignmentId='+assignmentId;
+    window.location.href = `${window.location.pathname}?caseId=${caseId}&assignmentId=${assignmentId}`;
   };
 
   // One time (initialization) subscriptions and related unsubscribe
@@ -204,11 +204,16 @@ export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
       });
 
       document.addEventListener('SdkLoggedOut', () => {
-        window.location.href = 'https://account-np.hmrc.gov.uk/services/debt/test/MDTP-mock/index.html';
+        window.location.href =
+          'https://account-np.hmrc.gov.uk/services/debt/test/MDTP-mock/index.html';
       });
 
       // Login if needed, without doing an initial main window redirect
-      loginIfNecessary({ appName: 'embedded', mainRedirect: true, redirectDoneCB: directWithQueryParam });
+      loginIfNecessary({
+        appName: 'embedded',
+        mainRedirect: true,
+        redirectDoneCB: directWithQueryParam
+      });
     });
 
     // Subscriptions can't be done until onPCoreReady.
@@ -271,7 +276,6 @@ export default function PaymentsClaim(mainProps: IPaymentsClaimProps) {
     setShowSignoutModal(false);
     staySignedIn();
   };
-
 
   return (
     <>

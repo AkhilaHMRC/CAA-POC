@@ -47,14 +47,14 @@ export default function InstructionComp({
 
   DOMPurify.addHook('beforeSanitizeAttributes', node => {
     if (node.tagName === 'A' && node.hasAttribute('target')) {
-      //@ts-ignore
+      // @ts-ignore
       node.setAttribute(TEMPORARY_ATTRIBUTE, node.getAttribute('target'));
     }
   });
 
   DOMPurify.addHook('afterSanitizeAttributes', node => {
     if (node.tagName === 'A' && node.hasAttribute(TEMPORARY_ATTRIBUTE)) {
-      //@ts-ignore
+      // @ts-ignore
       node.setAttribute('target', node.getAttribute(TEMPORARY_ATTRIBUTE));
       node.removeAttribute(TEMPORARY_ATTRIBUTE);
       if (node.getAttribute('target') === '_blank') {
